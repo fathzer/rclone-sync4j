@@ -58,3 +58,58 @@ syncOp.waitFor();  // Wait for sync to complete
 SynchronizationResult result = syncOp.result();
 System.out.println("Sync completed: " + result);
 ```
+
+
+## Rclone Configuration
+
+### When rclone is already configured
+
+If you already have rclone configured on your machine, the library will use your existing configuration file, typically located at:
+- `~/.config/rclone/rclone.conf` on Linux/macOS
+- `%APPDATA%\rclone\rclone.conf` on Windows
+
+### When rclone is not configured
+
+If rclone is not configured on the machine, you have two options:
+
+1. **Create a configuration file manually**:
+   ```bash
+   # Create config directory
+   mkdir -p ~/.config/rclone/
+   
+   # Create a minimal rclone config
+   cat > ~/.config/rclone/rclone.conf << 'EOL'
+   [remote]
+   type = your_remote_type  # e.g., s3, google drive, dropbox, etc.
+   # Add your remote configuration here
+   EOL
+   ```
+
+2. **Use a custom config file location** with `withConfigFile`:
+   ```java
+   RcloneSync sync = new RcloneSync("source", "remote:path")
+       .withConfigFile("/path/to/your/rclone.conf");
+   ```
+
+### Remote Configuration Examples
+
+#### S3 Example
+```ini
+[my-s3]
+type = s3
+provider = AWS
+access_key_id = your_access_key
+secret_access_key = your_secret_key
+region = us-east-1
+```
+
+#### Google Drive Example
+```ini
+[my-gdrive]
+type = drive
+client_id = your_client_id
+client_secret = your_client_secret
+token = your_token
+```
+
+> **Security Note**: Never commit sensitive credentials to version control. Use environment variables or a secrets manager for production environments.
