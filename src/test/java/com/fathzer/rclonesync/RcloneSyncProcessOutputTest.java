@@ -94,7 +94,6 @@ class RcloneSyncProcessOutputTest {
         };
         final CountDownLatch latch = new CountDownLatch(1);
         test.withExceptionConsumer(e -> {
-            System.out.println(Thread.currentThread().getName() + ": Exception consumer called with: " + e.getMessage());
             latch.countDown();
             exceptions.add(e);
         });

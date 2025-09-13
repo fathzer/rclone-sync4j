@@ -4,6 +4,17 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Represents the progress of a file synchronization operation.
+ * This record captures various metrics about the progress of a file transfer or check operation.
+ *
+ * @param processedBytes The number of bytes that have been processed so far
+ * @param totalBytes The total number of bytes to process (may be 0 if unknown)
+ * @param bytesThroughput The current transfer throughput (e.g., "1.2 MB/s")
+ * @param eta Estimated time remaining for the operation to complete
+ * @param processedChecks Number of files that have been checked
+ * @param totalChecks Total number of files to check
+ */
 public record Progress(
     long processedBytes,
     long totalBytes,
@@ -16,6 +27,13 @@ public record Progress(
         "^([\\d]*\\.?[\\d]+)\\s*([KMGT])?i?B$"
     );
     
+    /**
+     * Parses rclone's progress output strings into a Progress object.
+     *
+     * @param transfered The transfer progress string from rclone (e.g., "1.2 GB / 2.5 GB, 42%, 1.2 MB/s, ETA 12:34")
+     * @param checks The checks progress string from rclone (e.g., "42/100, 42%, 1.2 files/s")
+     * @return An Optional containing the parsed Progress object, or empty if parsing fails
+     */
     static Optional<Progress> parse(String transfered, String checks) {
         try {
             final String[] parts = transfered.split(",");
@@ -46,6 +64,15 @@ public record Progress(
     }
 
 
+    /**
+     * Converts a human-readable byte string (e.g., "1.5 MB") to its byte count.
+     * Supports both binary (KiB, MiB, etc.) and decimal (KB, MB, etc.) units.
+     *
+     * @param bytesAsString The string representation of bytes (e.g., "1.5 MB", "1.2 GiB")
+     * @return The number of bytes as a long
+     * @throws NullPointerException if the input string is null
+     * @throws NumberFormatException if the input string is empty or has an invalid format
+     */
     static long decode(String bytesAsString) {
         if (bytesAsString == null) {
             throw new NullPointerException("Input string cannot be null");
