@@ -2,6 +2,7 @@ package com.fathzer.rclonesync.demo;
 
 import com.fathzer.rclonesync.RcloneSync;
 
+@SuppressWarnings("squid:S106")
 public class RcloneTest {
     public static void main(String[] args) throws Exception {
         String source = "mypcloud:Mes photos/Images publiques/1998";
@@ -9,11 +10,11 @@ public class RcloneTest {
 
         var sync = new RcloneSync(source, destination)
         .withCheckSum(true)  // Enable checksum verification
-        .withEventConsumer(progress -> {
+        .withEventConsumer(progress ->
             // Handle progress updates
             System.out.printf("Progress: %s / %s%n", 
-                progress.processedChecks(), progress.totalChecks());
-        })
+                progress.processedChecks(), progress.totalChecks())
+        )
         .withExceptionConsumer(Exception::printStackTrace);
     
         var syncOp = sync.run();
