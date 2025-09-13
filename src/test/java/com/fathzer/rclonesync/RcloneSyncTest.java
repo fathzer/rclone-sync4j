@@ -89,4 +89,38 @@ class RcloneSyncTest {
             index++;
         }
     }
+
+    @Test
+    void testConstructor_WithNullSourceOrDestination() {
+        // Test null source
+        assertThrows(NullPointerException.class, () -> new RcloneSync(null, DESTINATION));
+        
+        // Test null destination
+        assertThrows(NullPointerException.class, () -> new RcloneSync(SOURCE, null));
+        
+        // Test both null
+        assertThrows(NullPointerException.class, () -> new RcloneSync(null, null));
+    }
+
+    @Test
+    void testWithEventConsumer_Null() {
+        assertThrows(NullPointerException.class, () -> rcloneSync.withEventConsumer(null));
+    }
+
+    @Test
+    void testWithExceptionConsumer_Null() {
+        assertThrows(NullPointerException.class, () -> rcloneSync.withExceptionConsumer(null));
+    }
+
+    @Test
+    void testWithExcludesFile_Null() {
+        // Should not throw for null
+        assertSame(rcloneSync, rcloneSync.withExcludesFile(null));
+    }
+
+    @Test
+    void testWithConfigFile_Null() {
+        // Should not throw for null
+        assertSame(rcloneSync, rcloneSync.withConfigFile(null));
+    }
 }
