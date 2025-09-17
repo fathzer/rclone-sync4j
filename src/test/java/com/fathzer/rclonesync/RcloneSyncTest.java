@@ -47,6 +47,14 @@ class RcloneSyncTest {
     }
 
     @Test
+    void testBuildCommand_WithExcludes() {
+        assertThrows(NullPointerException.class, () -> rcloneSync.withExcludes((String[])null));
+        rcloneSync.withExcludes("*.{xml,txt}");
+        List<String> command = rcloneSync.buildCommand();
+        assertCommandContains(command, "--exclude", "*.{xml,txt}");
+    }
+
+    @Test
     void testBuildCommand_WithConfigFile() {
         rcloneSync.withConfigFile(CONFIG_FILE);
         List<String> command = rcloneSync.buildCommand();

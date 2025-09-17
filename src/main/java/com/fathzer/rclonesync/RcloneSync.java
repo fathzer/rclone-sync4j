@@ -25,6 +25,7 @@ public class RcloneSync {
     private final String destination;
     private boolean checksum = false;
     private String excludesFile = null;
+    private List<String> excludes = List.of();
     private String configFile = null;
     private Consumer<Progress> eventConsumer = event -> {};
     private Consumer<IOException> exceptionConsumer = exception ->
@@ -66,6 +67,21 @@ public class RcloneSync {
      */
     public RcloneSync withExcludesFile(String excludesFile) {
         this.excludesFile = excludesFile;
+        return this;
+    }
+    
+    /**
+     * Sets exclusion patterns for the sync operation.
+     * Each pattern specifies a file or directory to exclude from the sync.
+     *
+     * @param excludes array of exclusion patterns (default: empty array)
+     * @return this instance for method chaining
+     */
+    public RcloneSync withExcludes(String... excludes) {
+        if (excludes == null) {
+            throw new NullPointerException("excludes must not be null");
+        }
+        this.excludes = List.of(excludes);
         return this;
     }
 
@@ -163,6 +179,10 @@ public class RcloneSync {
             cmd.add("--exclude-from");
             cmd.add(excludesFile);
         }
+        excludes.forEach(exclude -> {
+            cmd.add("--exclude");
+            cmd.add(exclude);
+        });
         if (configFile != null) {
             cmd.add("--config");
             cmd.add(configFile);

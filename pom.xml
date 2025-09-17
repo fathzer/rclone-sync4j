@@ -5,10 +5,10 @@
 	<parent>
 		<groupId>com.fathzer</groupId>
 		<artifactId>parent-pom</artifactId>
-		<version>1.0.9</version>
+		<version>1.1.0</version>
 	</parent>
 	<artifactId>rclone-sync4j</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2</version>
 
 	<name>rclone-sync4j</name>
 	<description>A Java wrapper for rclone sync.</description>
@@ -71,16 +71,6 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.sonatype.central</groupId>
-				<artifactId>central-publishing-maven-plugin</artifactId>
-				<version>0.4.0</version>
-				<extensions>true</extensions>
-				<configuration>
-					<publishingServerId>ReleaseFathzer</publishingServerId>
-					<tokenAuth>true</tokenAuth>
-				</configuration>
 			</plugin>
         </plugins>
     </build>
