@@ -4,23 +4,16 @@ package com.fathzer.rclonesync;
  * Represents an ongoing rclone synchronization operation.
  * This class provides methods to monitor and control the synchronization process.
  */
-public class Synchronization {
-    private final Process process;
+public abstract class Synchronization {
     private final SynchronizationResult result;
     private volatile boolean cancelled;
 
-    Synchronization(Process process, SynchronizationResult result) {
-        this.process = process;
-        this.result = result;
-    }
-
     /**
-     * Gets the underlying Process instance for this synchronization.
-     *
-     * @return the Process instance
+     * Constructor.
+     * @param result the synchronization result to be used
      */
-    Process process() {
-        return this.process;
+    protected Synchronization(SynchronizationResult result) {
+        this.result = result;
     }
 
     /**
@@ -39,10 +32,7 @@ public class Synchronization {
      *
      * @throws InterruptedException if the current thread is interrupted while waiting
      */
-    public void waitFor() throws InterruptedException {
-        this.process.waitFor();
-        this.result.setExitCode(this.process.exitValue());
-    }
+    public abstract void waitFor() throws InterruptedException;
 
     /**
      * Attempts to cancel the ongoing synchronization.
@@ -51,7 +41,6 @@ public class Synchronization {
      */
     public void cancel() {
         this.cancelled = true;
-        this.process.destroy();
     }
 
     /**

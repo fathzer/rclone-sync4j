@@ -1,4 +1,4 @@
-package com.fathzer.rclonesync;
+package com.fathzer.rclonesync.cmd;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import com.fathzer.rclonesync.SynchronizationParameters;
 
 class RcloneSyncTest {
     private static final String SOURCE = "/source/dir";

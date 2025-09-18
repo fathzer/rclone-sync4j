@@ -1,4 +1,4 @@
-package com.fathzer.rclonesync;
+package com.fathzer.rclonesync.cmd;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -7,7 +7,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-class ProgressTest {
+import com.fathzer.rclonesync.Progress;
+
+class ProgressParserTest {
 
     @ParameterizedTest(name = "valid inputs {index} : {arguments}")
     @CsvSource({
@@ -23,7 +25,7 @@ class ProgressTest {
         "1.5KiB, 1536"
     })
     void testDecode_ValidInputs(String input, long expected) {
-        assertEquals(expected, Progress.decode(input));
+        assertEquals(expected, ProgressParser.decode(input));
     }
 
     @ParameterizedTest(name = "invalid inputs {index} : {arguments}")
@@ -31,16 +33,16 @@ class ProgressTest {
         "", " ", "B", "X", "1", "123", "1X", "1.5", "1.5X", "1.2.3KiB", "1 K"
     })
     void testDecode_InvalidInputs(String input) {
-        assertThrows(NumberFormatException.class, () -> Progress.decode(input));
+        assertThrows(NumberFormatException.class, () -> ProgressParser.decode(input));
     }
 
     @Test
     void testDecode_NullInput() {
-        assertThrows(NullPointerException.class, () -> Progress.decode(null));
+        assertThrows(NullPointerException.class, () -> ProgressParser.decode(null));
     }
 
     @Test
     void basicTest() {
-        assertEquals(1, Progress.decode("1B"));
+        assertEquals(1, ProgressParser.decode("1B"));
     }
 }

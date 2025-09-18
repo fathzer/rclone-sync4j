@@ -10,7 +10,12 @@ public class SynchronizationResult {
     private int copied;
     private int replaced;
 
-    SynchronizationResult() {
+    /**
+     * Creates a new SynchronizationResult instance.
+     * <br> All counters are initialized to zero, exit code is set to -0.
+     */
+    public SynchronizationResult() {
+        // Initialize all counters to zero
     }
 
     /**
@@ -27,7 +32,7 @@ public class SynchronizationResult {
      *
      * @param exitCode the exit code to set
      */
-    void setExitCode(int exitCode) {
+    public void setExitCode(int exitCode) {
     	this.exitCode = exitCode;
     }
 
@@ -43,7 +48,7 @@ public class SynchronizationResult {
     /**
      * Increments the count of deleted files by one.
      */
-    void incrementDeleted() {
+    public void incrementDeleted() {
         this.deleted++;
     }
 
@@ -59,7 +64,7 @@ public class SynchronizationResult {
     /**
      * Increments the count of newly copied files by one.
      */
-    void incrementCopied() {
+    public void incrementCopied() {
         this.copied++;
     }
 
@@ -75,7 +80,7 @@ public class SynchronizationResult {
     /**
      * Increments the count of replaced files by one.
      */
-    void incrementReplaced() {
+    public void incrementReplaced() {
         this.replaced++;
     }
 

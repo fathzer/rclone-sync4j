@@ -1,4 +1,4 @@
-package com.fathzer.rclonesync;
+package com.fathzer.rclonesync.cmd;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -15,6 +15,11 @@ import java.util.function.Supplier;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import com.fathzer.rclonesync.Progress;
+import com.fathzer.rclonesync.Synchronization;
+import com.fathzer.rclonesync.SynchronizationParameters;
+import com.fathzer.rclonesync.SynchronizationResult;
 
 class RcloneSyncProcessOutputTest {
     private RcloneSyncCmd rcloneSync;

@@ -1,4 +1,4 @@
-package com.fathzer.rclonesync;
+package com.fathzer.rclonesync.cmd;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -8,18 +8,20 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import com.fathzer.rclonesync.SynchronizationResult;
+
 class SynchronizationTest {
     @Mock
     private Process process;
     
     private SynchronizationResult result;
-    private Synchronization synchronization;
+    private Sync synchronization;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
         result = new SynchronizationResult();
-        synchronization = new Synchronization(process, result);
+        synchronization = new Sync(process, result);
     }
 
     @Test

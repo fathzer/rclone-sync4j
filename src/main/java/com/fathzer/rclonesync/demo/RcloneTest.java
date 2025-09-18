@@ -1,7 +1,7 @@
 package com.fathzer.rclonesync.demo;
 
-import com.fathzer.rclonesync.RcloneSyncCmd;
 import com.fathzer.rclonesync.SynchronizationParameters;
+import com.fathzer.rclonesync.cmd.RcloneSyncCmd;
 
 @SuppressWarnings("squid:S106")
 public class RcloneTest {

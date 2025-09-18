@@ -1,4 +1,4 @@
-package com.fathzer.rclonesync;
+package com.fathzer.rclonesync.cmd;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,6 +8,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
+
+import com.fathzer.rclonesync.Progress;
+import com.fathzer.rclonesync.RcloneSync;
+import com.fathzer.rclonesync.Synchronization;
+import com.fathzer.rclonesync.SynchronizationParameters;
+import com.fathzer.rclonesync.SynchronizationResult;
 
 /**
  * A class for running rclone sync commands with progress tracking.
@@ -45,7 +51,7 @@ public class RcloneSyncCmd implements RcloneSync {
     public Synchronization run() throws IOException {
         final List<String> cmd = buildCommand();
         final Process process = buildProcess(cmd);
-        final Synchronization synchronization = new Synchronization(process, new SynchronizationResult());
+        final Sync synchronization = new Sync(process, new SynchronizationResult());
 
         final Thread thread = new Thread(() -> readProcessOutput(synchronization));
         thread.setDaemon(true);
@@ -96,7 +102,7 @@ public class RcloneSyncCmd implements RcloneSync {
         return cmd;
     }
 
-    private void readProcessOutput(Synchronization synchronization) {
+    private void readProcessOutput(Sync synchronization) {
         final Process process = synchronization.process();
         final SynchronizationResult result = synchronization.result();
         try {
@@ -117,7 +123,7 @@ public class RcloneSyncCmd implements RcloneSync {
                     if (checks.startsWith(CHECKS_PREFIX)) {
                         final String transfered = line.substring(TRANSFERRED_PREFIX.length()).trim();
                         final String checksLine = checks.substring(CHECKS_PREFIX.length()).trim();
-                        final Optional<Progress> oProgress = Progress.parse(transfered, checksLine);
+                        final Optional<Progress> oProgress = ProgressParser.parse(transfered, checksLine);
                         if (oProgress.isPresent()) {
                             final Progress progress = oProgress.get();
                             parameters.getEventConsumer().accept(progress);
