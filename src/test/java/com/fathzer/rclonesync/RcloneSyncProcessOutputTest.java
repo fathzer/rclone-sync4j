@@ -17,16 +17,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class RcloneSyncProcessOutputTest {
-    private RcloneSync rcloneSync;
+    private RcloneSyncCmd rcloneSync;
     private SynchronizationResult result;
     private List<Progress> capturedProgress;
 
     @BeforeEach
     void setUp() {
-        rcloneSync = new RcloneSync("source", "destination");
+        SynchronizationParameters parameters = new SynchronizationParameters("source", "destination");
+        rcloneSync = new RcloneSyncCmd(parameters);
         result = new SynchronizationResult();
         capturedProgress = new ArrayList<>();
-        rcloneSync.withEventConsumer(p -> capturedProgress.add(p));
+        parameters.withEventConsumer(p -> capturedProgress.add(p));
     }
 
     @Test
@@ -83,7 +84,8 @@ class RcloneSyncProcessOutputTest {
 
         // Test the exception consumer
         List<IOException> exceptions = new LinkedList<>();
-        RcloneSync test = new RcloneSync("source", "destination") {
+        SynchronizationParameters synchronizationParameters = new SynchronizationParameters("source", "destination");
+        RcloneSyncCmd test = new RcloneSyncCmd(synchronizationParameters) {
             @Override
             protected Process buildProcess(List<String> cmd) {
                 Process process = mock(Process.class);
@@ -93,7 +95,7 @@ class RcloneSyncProcessOutputTest {
             }
         };
         final CountDownLatch latch = new CountDownLatch(1);
-        test.withExceptionConsumer(e -> {
+        synchronizationParameters.withExceptionConsumer(e -> {
             latch.countDown();
             exceptions.add(e);
         });

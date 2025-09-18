@@ -16,7 +16,7 @@ A Java facade for [rclone](https://rclone.org/) sync operations with progress tr
 
 ## Requirements
 
-- Java 17 or higher
+- Java 21 or higher
 - rclone installed and available in system PATH
 
 ## Installation
@@ -27,14 +27,14 @@ A Java facade for [rclone](https://rclone.org/) sync operations with progress tr
 <dependency>
     <groupId>com.fathzer</groupId>
     <artifactId>rclone-sync4j</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.3</version>
 </dependency>
 ```
 
 ### Gradle
 
 ```groovy
-implementation 'com.fathzer:rclone-sync4j:0.0.1'
+implementation 'com.fathzer:rclone-sync4j:0.0.3'
 ```
 
 ## Usage
@@ -42,17 +42,16 @@ implementation 'com.fathzer:rclone-sync4j:0.0.1'
 ### Basic Example
 
 ```java
-RcloneSync sync = new RcloneSync("local/path", "remote:path")
+SynchronizationParameters parameters = new SynchronizationParameters("local/path", "remote:path")
     .withCheckSum(true)  // Enable checksum verification
     .withExcludesFile("exclude-patterns.txt")  // Optional: exclude files
     .withEventConsumer(progress -> 
         // Handle progress updates
-        System.out.printf("Progress: %s / %s%n", 
-                progress.processedChecks(), progress.totalChecks());
+        System.out.println("Progress: " + progress)
     )
     .withExceptionConsumer(Exception::printStackTrace);
 
-Synchronization syncOp = sync.run();
+SynchronizationOperation syncOp = new RcloneSyncCmd(parameters).run();
 syncOp.waitFor();  // Wait for sync to complete
 
 SynchronizationResult result = syncOp.result();
@@ -87,7 +86,7 @@ If rclone is not configured on the machine, you have two options:
 
 2. **Use a custom config file location** with `withConfigFile`:
    ```java
-   RcloneSync sync = new RcloneSync("source", "remote:path")
+   SynchronizationParameters parameters = new SynchronizationParameters("source", "remote:path")
        .withConfigFile("/path/to/your/rclone.conf");
    ```
 

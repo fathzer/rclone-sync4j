@@ -1,26 +1,26 @@
 package com.fathzer.rclonesync.demo;
 
-import com.fathzer.rclonesync.RcloneSync;
+import com.fathzer.rclonesync.RcloneSyncCmd;
+import com.fathzer.rclonesync.SynchronizationParameters;
 
 @SuppressWarnings("squid:S106")
 public class RcloneTest {
     public static void main(String[] args) throws Exception {
-        String source = "mypcloud:Mes photos/Images publiques/1998";
+        String source = "pCloud:PhotosJM/1998";
         String destination = System.getProperty("user.home") + "/Bureau/test/1998";
 
-        var sync = new RcloneSync(source, destination)
+        final var sync = new SynchronizationParameters(source, destination)
         .withCheckSum(true)  // Enable checksum verification
         .withEventConsumer(progress ->
             // Handle progress updates
-            System.out.printf("Progress: %s / %s%n", 
-                progress.processedChecks(), progress.totalChecks())
+            System.out.println("Progress: " + progress)
         )
         .withExceptionConsumer(Exception::printStackTrace);
     
-        var syncOp = sync.run();
+        final var syncOp = new RcloneSyncCmd(sync).run();
         syncOp.waitFor();  // Wait for sync to complete
         
-        var result = syncOp.result();
+        final var result = syncOp.result();
         System.out.println("Sync completed: " + result);        
     }
 }
